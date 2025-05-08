@@ -36,11 +36,86 @@ Step 5: **Security Foundation
 The security of RSA relies on the difficulty of factoring large numbers; thus, choosing sufficiently large prime numbers for \( p \) and \( q \) is crucial for security.
 
 ## Program:
+# Name : R ANIRUDH
+# Reg No : 212223230016
+
+```
+def gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+def mod_exp(base, exp, mod):
+    result = 1
+    while exp > 0:
+        if exp % 2 == 1:
+            result = (result * base) % mod
+        base = (base * base) % mod
+        exp = exp // 2
+    return result
+
+def mod_inverse(e, phi):
+    t, newt = 0, 1
+    r, newr = phi, e
+    while newr != 0:
+        quotient = r // newr
+        t, newt = newt, t - quotient * newt
+        r, newr = newr, r - quotient * newr
+    if r > 1:
+        return -1  # No modular inverse
+    if t < 0:
+        t += phi
+    return t
+
+def main():
+    # Step 1: Choose primes
+    p = 61
+    q = 53
+
+    # Step 2: Compute n and phi
+    n = p * q
+    phi = (p - 1) * (q - 1)
+
+    # Step 3: Choose e
+    e = 17
+    if gcd(e, phi) != 1:
+        print("e and phi(n) are not coprime!")
+        return
+
+    # Step 4: Calculate d
+    d = mod_inverse(e, phi)
+    if d == -1:
+        print("No modular inverse found for e!")
+        return
+
+    # Step 5: Display keys
+    print(f"Public Key: (e = {e}, n = {n})")
+    print(f"Private Key: (d = {d}, n = {n})")
+
+    # Step 6: Get message
+    message = input("Enter a message to encrypt (alphabetic characters only): ")
+
+    # Step 7: Encrypt
+    encrypted = [mod_exp(ord(char), e, n) for char in message]
+    print("\nEncrypted Message:")
+    print(' '.join(str(num) for num in encrypted))
+
+    # Step 8: Decrypt
+    decrypted = ''.join(chr(mod_exp(char, d, n)) for char in encrypted)
+    print("\nDecrypted Message:")
+    print(decrypted)
+
+if __name__ == "__main__":
+    main()
+```
 
 
 
 
 ## Output:
+
+![image](https://github.com/user-attachments/assets/da578bd4-08a8-4aa4-9108-af1adf76c48a)
+
 
 
 
